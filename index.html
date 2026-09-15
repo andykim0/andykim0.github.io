@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seunghyun (Andy) Kim</title>
+<meta name="description" content="Portfolio of Seunghyun (Andy) Kim, Industrial Engineering and CS at UIUC. Full-stack platforms, automation, optimization research, document security.">
+<style>
+  :root { --ink:#1a1a1a; --muted:#5c5c5c; --line:#e3e3e3; --bg:#fbfbfa; --card:#ffffff; --accent:#1f3864; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  main { max-width:860px; margin:0 auto; padding:56px 24px 80px; }
+  h1 { font-size:34px; margin:0 0 6px; letter-spacing:-0.01em; }
+  .sub { color:var(--muted); margin:0 0 14px; }
+  .links a { color:var(--accent); text-decoration:none; margin-right:18px; border-bottom:1px solid transparent; }
+  .links a:hover { border-bottom-color:var(--accent); }
+  h2 { font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:48px 0 14px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:22px 24px; margin-bottom:18px; }
+  .card h3 { margin:0 0 4px; font-size:19px; }
+  .card .meta { color:var(--muted); font-size:14px; margin-bottom:10px; }
+  .card .meta a { color:var(--accent); text-decoration:none; }
+  .card p { margin:8px 0; }
+  .card ul { margin:8px 0 0 18px; padding:0; }
+  .card li { margin:4px 0; }
+  .outcome { font-weight:600; }
+  .tags { margin-top:12px; }
+  .tag { display:inline-block; font-size:12.5px; color:var(--muted); background:#f1f1ee; border-radius:999px; padding:3px 10px; margin:0 6px 6px 0; }
+  pre { background:#f5f5f2; border:1px solid var(--line); border-radius:8px; padding:12px 14px; font-size:12.5px; line-height:1.4; overflow-x:auto; margin:12px 0 0; }
+  img.shot { width:100%; border:1px solid var(--line); border-radius:8px; margin-top:12px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:640px){ .grid { grid-template-columns:1fr; } h1 { font-size:28px; } }
+  footer { margin-top:56px; color:var(--muted); font-size:14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Seunghyun (Andy) Kim</h1>
+  <p class="sub">Industrial Engineering, minor in Computer Science, University of Illinois Urbana-Champaign, Class of 2028. Seeking Summer 2027 software engineering and operations research internships.</p>
+  <p class="links">
+    <a href="https://github.com/andykim0">GitHub</a>
+    <a href="https://www.linkedin.com/in/seunghyun-andy-kim">LinkedIn</a>
+    <a href="mailto:sk122@illinois.edu">sk122@illinois.edu</a>
+  </p>
+  <p>I build software that lets a small team run an operation that used to need a bigger one: full-stack platforms, automation against systems that were never meant to be automated, and the safety layer around AI features so they can be trusted with real money. My research is in optimization under uncertainty.</p>
+
+  <h2>Projects</h2>
+
+  <div class="card">
+    <h3>Zenithink: hospital marketing automation platform</h3>
+    <div class="meta">BRO MNS, Software Engineer Intern, Apr to Aug 2026. Private company repo; happy to walk through the architecture in an interview.</div>
+    <p class="outcome">In production for 3 clinics. One operator now does in about 4 hours a week what used to take three people.</p>
+    <p>I designed and built the full stack: a React/TypeScript console, a Python/FastAPI API, and PostgreSQL via Supabase for auth, data, and storage. 70 REST endpoints across 10 domains, 1,322 backend tests, CI/CD on GitHub Actions, deployed on Vercel and Railway. Delivered with a handover package (API spec, ERD, software bill of materials) that the agency operates from today.</p>
+    <ul>
+      <li><strong>Multi-tenant security.</strong> JWT validation with server-side clinic scoping on every read, write, job, and artifact lookup. No provider secrets reach the browser.</li>
+      <li><strong>AI content pipelines.</strong> Claude and Gemini generate monthly content plans and posts; durable background jobs persist their state and recover after a crash; a human review gate sits before anything publishes to Instagram or YouTube.</li>
+      <li><strong>Search-ads bid engine.</strong> Collects Naver Search Ads performance daily, classifies opportunities, and writes audited decision records. Runs in dry-run by default; live spend changes require a conversion-health check and explicit approval.</li>
+    </ul>
+<pre>Browser -> React/TypeScript (Vercel) -> FastAPI (Railway) -> Supabase Auth / Postgres / Storage
+                                                     -> Claude, Gemini, Naver Search Ads, Instagram Graph, YouTube
+GitHub Actions -> CI merge gate, production deploy, scheduled ad-data collection</pre>
+    <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">Supabase</span><span class="tag">Claude API</span><span class="tag">Gemini API</span><span class="tag">GitHub Actions</span><span class="tag">Docker</span></div>
+  </div>
+
+  <div class="card">
+    <h3>HANFILTER: prompt injection hidden inside documents</h3>
+    <div class="meta"><a href="https://github.com/andykim0/hanfilter-poc">github.com/andykim0/hanfilter-poc</a> · Security proof of concept for a CODEGATE 2026 proposal</div>
+    <p>A deterministic detector for prompt injection hidden inside PDF and DOCX files: white-on-white text, sub-4pt fonts, hidden runs, instructions planted in metadata, zero-width characters, and text rendered off the page. It inspects the structure layer that LLM guardrails never see, because guardrails only receive the extracted text and lose the one decisive signal: this text was hidden on purpose.</p>
+    <ul>
+      <li>No model, no API key, runs offline. Every finding carries a reason code, a location, and the recovered text.</li>
+      <li>The DOCX detector resolves the real background behind each run (highlight, run shading, paragraph shading, table cell) before calling text hidden, so white text on a navy header is not a false positive.</li>
+      <li>31 tests covering all seven reason codes, GitHub Actions CI, an exit-code gate for ingestion pipelines, and a drag-and-drop web demo.</li>
+    </ul>
+    <img class="shot" src="https://github.com/user-attachments/assets/018c99be-ea4e-4b77-bee4-e526e30ed3c9" alt="HANFILTER command-line output: attack samples flagged with a reason, location and recovered text; clean documents pass">
+    <div class="tags"><span class="tag">Python</span><span class="tag">pdfplumber</span><span class="tag">python-docx</span><span class="tag">FastAPI</span><span class="tag">pytest</span><span class="tag">GitHub Actions</span></div>
+  </div>
+
+  <div class="card">
+    <h3>settlement_app: delivery-rider settlement automation</h3>
+    <div class="meta"><a href="https://github.com/andykim0/settlement_app">github.com/andykim0/settlement_app</a> · Desktop tool, May to Aug 2026</div>
+    <p>Korean food-delivery branches (Baemin, Coupang Eats) settle rider pay every morning from Excel reports that live behind portals with a one-time code on every login. This tool drives the portals with Playwright, relays SMS and IMAP e-mail OTPs automatically, pulls the reports, and streams every run's state and logs to a monitoring page.</p>
+    <ul>
+      <li>Layered architecture: presentation (PySide6) to application (use cases, services) to domain, with scrapers and the database behind ports so a portal change is a one-module fix.</li>
+      <li>13-table PostgreSQL schema with AES-256-GCM credential columns, Decimal money, and soft deletes. The README states plainly which parts are built and which are still specified.</li>
+    </ul>
+<pre>presentation/  PySide6 pages, dialogs, live monitoring
+application/   use cases, services, RunRegistry (thread-safe run state over Qt signals)
+domain/        Branch, Rider, DownloadJob, SettlementRun
+infrastructure/ Playwright scrapers (SMS + IMAP OTP), Postgres, settings, keyring</pre>
+    <div class="tags"><span class="tag">Python</span><span class="tag">PySide6</span><span class="tag">Playwright</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Anaks Labs app</h3>
+      <div class="meta"><a href="https://github.com/andykim0/anakslabs-app">github.com/andykim0/anakslabs-app</a></div>
+      <p>AI website generator and hosting SaaS for small businesses: brand extraction, multi-page site generation, preview, one-click deploy. TypeScript / Next.js, Supabase, Vercel. 743 commits. Runs in mock mode without keys.</p>
+    </div>
+    <div class="card">
+      <h3>multiagent</h3>
+      <div class="meta"><a href="https://github.com/andykim0/multiagent">github.com/andykim0/multiagent</a></div>
+      <p>A Claude Code multi-agent team template: a write-guarded reviewer, a bridge engineer seat that stamps which model produced the code, and logging hooks. Built a zero-dependency CSV statistics CLI with 21 tests through it.</p>
+    </div>
+  </div>
+
+  <h2>Research</h2>
+  <div class="card">
+    <h3>Contextual inverse optimization</h3>
+    <div class="meta">Undergraduate research with Prof. Hanasusanto, UIUC Industrial and Enterprise Systems Engineering, Fall 2026</div>
+    <p>Why does a manager override a planning system's recommended quantity? The project recovers the manager's implicit demand-regime weight and stockout penalty (the newsvendor critical ratio) from records of context, recommendation, and final quantity under a two-regime Gaussian-mixture demand model. Each observation gives a linear equation in the unknowns; with bounded error, linear programs return the feasible set, and four explanations are tested for compatibility. I am building the Python simulator and the identification argument, then running experiments over sample size, noise, and contextual response, with a stress test for false attribution under a binding production limit.</p>
+  </div>
+
+  <h2>Experience in brief</h2>
+  <div class="card">
+    <ul>
+      <li><strong>LG CNS, Consulting Intern (2024).</strong> Python/pandas pipeline that automated cost analysis for a client with about $235M in revenue and fed a program that delivered about $2.5M in realized annual savings.</li>
+      <li><strong>Republic of Korea Army, Squad Leader (2024 to 2026).</strong> Led a squad in time-critical, safety-regulated operations; owned equipment diagnostics and preventive maintenance, cutting downtime by about 15%.</li>
+      <li><strong>Enterprise Systems Optimization Lab, UIUC (2024).</strong> Optimization models and data-driven simulations for engineering systems research with Prof. Harrison Kim.</li>
+    </ul>
+  </div>
+
+  <h2>Skills</h2>
+  <div class="card">
+    <p><strong>Languages:</strong> Python, TypeScript, JavaScript, C++, SQL</p>
+    <p><strong>Frameworks and tools:</strong> React, Vite, FastAPI, PySide6, Playwright, Docker, GitHub Actions, Git</p>
+    <p><strong>Cloud and data:</strong> Vercel, Railway, Supabase (Auth, RLS, Storage), PostgreSQL, Linux</p>
+    <p><strong>AI:</strong> Claude and Gemini APIs, LLM content pipelines with human review gates, durable background jobs, prompt injection defenses</p>
+    <p><strong>Optimization:</strong> LP / MIP modeling, inverse optimization, simulation</p>
+  </div>
+
+  <footer>Seunghyun (Andy) Kim · <a href="https://github.com/andykim0" style="color:var(--accent);text-decoration:none">github.com/andykim0</a> · Champaign, IL</footer>
+</main>
+</body>
+</html>
